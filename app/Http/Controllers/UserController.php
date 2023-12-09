@@ -2,24 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Interfaces\UserRepositoryInterface;
+use App\Facades\UserFacade;
 use App\Models\User;
-use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    protected $repo;
-    public function __construct(UserRepositoryInterface $repo)
-    {
-        $this->repo = $repo;
-    }
+
     public function index(){
-        $users = $this->repo->GetAllUsers();
+        $users = UserFacade::GetAllUsers();
         return response()->json($users);
     }
     public function show(User $user){
-        $user = $this->repo->GetUserById($user);
+        $user = UserFacade::getUserById($user);
         return response()->json($user);
+    }
+    public function store(Request $request){
+        return response()->json(UserFacade::createUser($request));
     }
 }
